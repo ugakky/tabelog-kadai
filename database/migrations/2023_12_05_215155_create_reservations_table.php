@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->datetime('time'); //予約時間
-            $table->integer('people'); //予約人数
+            $table->datetime('time');
+            $table->integer('people');
             $table->timestamps();
         });
     }

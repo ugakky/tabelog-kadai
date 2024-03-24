@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->enum('evaluation', ['1', '2', '3', '4', '5']); //5段階評価
-            $table->text('comment'); //コメント
+            $table->enum('evaluation', ['1', '2', '3', '4', '5']);
+            $table->text('comment');
             $table->timestamps();
         });
     }
