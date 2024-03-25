@@ -21,3 +21,7 @@
   color: #ffffff;
   background-color: #d94b0e;
 }
+
+.background-class {
+  background-image: url('path/to/your/image.jpg');
+}
