@@ -15,8 +15,10 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             // 他のカラムがあればここに追加してください
+            $table->integer('major_category_id')->notNull()->default(0);
             $table->timestamps();
         });
+        
     }
 
     /**
