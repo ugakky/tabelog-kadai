@@ -14,8 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->bigInteger('user_id')->unsigned()->after('id');
-            $table->bigInteger('restaurant_id')->unsigned()->after('user_id');
+            // ユーザーIDカラムが存在しない場合のみ追加
+            if (!Schema::hasColumn('reservations', 'user_id')) {
+                $table->bigInteger('user_id')->unsigned()->after('id');
+            }
+
+            // レストランIDカラムが存在しない場合のみ追加
+            if (!Schema::hasColumn('reservations', 'restaurant_id')) {
+                $table->bigInteger('restaurant_id')->unsigned()->after('user_id');
+            }
         });
     }
 
@@ -27,8 +34,14 @@ return new class extends Migration
     public function down()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-            $table->dropColumn('restaurant_id');
+            // カラムが存在する場合のみ削除
+            if (Schema::hasColumn('reservations', 'user_id')) {
+                $table->dropColumn('user_id');
+            }
+
+            if (Schema::hasColumn('reservations', 'restaurant_id')) {
+                $table->dropColumn('restaurant_id');
+            }
         });
     }
 };
