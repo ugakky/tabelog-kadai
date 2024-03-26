@@ -23,5 +23,5 @@
 }
 
 .background-class {
-  background-image: url('path/to/your/image.jpg');
+  background-image: url('../images/gohanBG.png');
 }

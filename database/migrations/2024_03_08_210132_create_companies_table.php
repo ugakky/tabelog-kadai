@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('company_name');
-            $table->string('representative');
-            $table->string('address');
-            $table->string('telephone');
-            $table->string('business');
+            $table->string('company_name')->default(rand());
+            $table->string('representative')->default(rand());
+            $table->string('address')->default(rand());
+            $table->string('telephone')->default(rand());
+            $table->string('business')->default(rand());
             $table->timestamps();
         });
     }
