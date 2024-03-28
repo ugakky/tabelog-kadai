@@ -18,7 +18,12 @@ class ReservationController extends Controller
     {
         $user = Auth::user();
         $reservations = Reservation::where('user_id', $user->id)->get();
-
+    
+        if ($reservations->isEmpty()) {
+            // 予約がない場合は、特定のビューにリダイレクトする
+            return view('reservations.no_reservations');
+        }
+    
         return view('reservations.index', compact('reservations'));
     }
 
