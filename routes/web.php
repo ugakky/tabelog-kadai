@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
+use Psy\VersionUpdater\Checker;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,4 +51,6 @@ Route::controller(CheckoutController::class)->group(function () {
   Route::get('checkout', 'index')->name('checkout.index');
   Route::post('checkout', 'store')->name('checkout.store');
   Route::get('checkout/success', 'success')->name('checkout.success');
+  Route::delete('/cancel-membership')->name('cancelMembership');
 });
+Route::delete('/cancel-membership', [CheckoutController::class, 'cancel'])->name('cancelMembership');

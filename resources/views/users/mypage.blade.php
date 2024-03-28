@@ -11,6 +11,7 @@
     <p><a class="nav-link" href="{{route('mypage.edit')}}">・アカウント情報の編集</a></p>
     <p><a class="nav-link" href="{{route('reservations.index')}}">・予約一覧</a></p>
     <p><a class="nav-link" href="{{route('mypage.favorite')}}">・お気に入り店舗一覧</a></p>
+    <p><a href="{{route('checkout.index')}}">有料会員を退会する</a></p>
     @else
     <p><a href="{{route('mypage.edit')}}">アカウント情報の編集</a></p>
     <p><a href="{{route('checkout.index')}}">有料会員になる</a></p>

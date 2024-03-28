@@ -5,6 +5,7 @@ use App\Admin\Controllers\MemberShipFeeController;
 use App\Admin\Controllers\RestaurantController;
 use App\Admin\Controllers\UserController;
 use Illuminate\Routing\Router;
+use App\Admin\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 Admin::routes();
@@ -21,4 +22,6 @@ Route::group([
     $router->resource('restaurants', RestaurantController::class);
     $router->resource('users', UserController::class);
     $router->resource('member-ship-fees', MemberShipFeeController::class)->only('index');
+    $router->resource('company', CompanyController::class)->only('index');
+    
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
@@ -48,5 +49,35 @@ class CheckoutController extends Controller
         $user->touch(); // タイムスタンプを更新
 
         return view('checkout.success');
+    }
+
+    public function cancel()
+    {
+        $user = Auth::user();
+
+        // StripeのAPIキーをセット
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        try {
+            // Stripeの顧客IDを取得
+            $stripeCustomerId = $user->stripe_customer_id;
+
+            // 顧客IDを使用して定期購読をキャンセル
+            $subscription = \Stripe\Subscription::retrieve($user->stripe_subscription_id);
+            $subscription->cancel();
+
+            // 顧客を削除（オプション）
+            // Stripe\Customer::retrieve($stripeCustomerId)->delete();
+
+            // ユーザーの会員ステータスを更新
+            $user->member_status = "free";
+            $user->save();
+
+            // リダイレクトとメッセージを返す
+            return redirect()->back()->with('status', '退会が完了しました');
+        } catch (ApiErrorException $e) {
+            // エラーが発生した場合の処理
+            return redirect()->back()->withErrors(['stripe_error' => 'Stripeでエラーが発生しました: ' . $e->getMessage()]);
+        }
     }
 }
