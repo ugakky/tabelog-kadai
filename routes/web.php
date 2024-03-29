@@ -37,6 +37,7 @@ Route::get('/reservations/subscription', [ReservationController::class, 'create'
 Route::post('/reservations/register', [ReservationController::class, 'store'])->name('reservations.register');
 Route::get('restaurants/{restaurant}/favorite', [RestaurantController::class, 'favorite'])->name('restaurants.favorite');
 Route::get('restaurants/{restaurant}/unfavorite', [RestaurantController::class, 'unfavorite'])->name('restaurants.unfavorite');
+Route::delete('/reservations/{reservation}', [ReservationController::class, 'cancel'])->name('reservations.cancel');
 
 Route::controller(UserController::class)->group(function () {
   Route::get('users/mypage', 'mypage')->name('mypage');
@@ -59,5 +60,6 @@ Route::post('/cancel-membership', [CheckoutController::class, 'cancel'])->name('
 Route::delete('/cancel-membership', [CheckoutController::class, 'cancel'])->name('cancel.membership');
 
 Route::get('/cancelled', function () {
-    return view('cancelled');
+  return view('checkout.cancelled');
 })->name('cancelled');
+

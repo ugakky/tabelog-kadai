@@ -8,13 +8,19 @@
     <h1>マイページ</h1>
     <hr>
     @if ($user->is_paid_member)
-    <p><a class="nav-link" href="{{route('mypage.edit')}}">・アカウント情報の編集</a></p>
-    <p><a class="nav-link" href="{{route('reservations.index')}}">・予約一覧</a></p>
-    <p><a class="nav-link" href="{{route('mypage.favorite')}}">・お気に入り店舗一覧</a></p>
+    <p><a class="nav-link" href="{{ route('mypage.edit') }}">・アカウント情報の編集</a></p>
+    <p><a class="nav-link" href="{{ route('reservations.index') }}">・予約一覧</a></p>
+    <p><a class="nav-link" href="{{ route('mypage.favorite') }}">・お気に入り店舗一覧</a></p>
+    <form action="{{ route('cancel.membership') }}" method="POST">
+      @csrf
+      @method('DELETE')
+      <button type="submit">購読をキャンセル</button>
+    </form>
     @else
-    <p><a href="{{route('mypage.edit')}}">アカウント情報の編集</a></p>
-    <p><a href="{{route('checkout.index')}}">有料会員になる</a></p>
+    <p><a href="{{ route('mypage.edit') }}">アカウント情報の編集</a></p>
+    <p><a href="{{ route('checkout.index') }}">有料会員になる</a></p>
     @endif
     <hr>
   </div>
 </div>
+@endsection

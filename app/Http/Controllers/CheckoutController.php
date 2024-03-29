@@ -73,9 +73,9 @@ class CheckoutController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->subscribed('default')) {
+        if ($user->member_status === "paid" && $user->stripe_subscription_id !== null) {
             // ユーザーが定期購読している場合の処理
-            $user->subscription('default')->cancel(); // 定期購読をキャンセル
+            $this->cancelSubscription($user);
         }
 
         // ユーザーの会員ステータスを更新
@@ -85,4 +85,21 @@ class CheckoutController extends Controller
         // リダイレクトとメッセージを返す
         return redirect()->route('cancelled')->with('status', '退会が完了しました');
     }
+
+    // 定期購読のキャンセル処理
+    protected function cancelSubscription($user)
+    {
+        $stripeSubscriptionId = $user->stripe_subscription_id;
+
+        try {
+            // Stripe で定期購読をキャンセル
+            \Stripe\Subscription::update($stripeSubscriptionId, [
+                'cancel_at_period_end' => true // 次の請求日でキャンセル
+            ]);
+        } catch (\Exception $e) {
+            // エラー処理
+            // 何らかのエラーが発生した場合の処理を記述
+        }
+    }
+
 }
