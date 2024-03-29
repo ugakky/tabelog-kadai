@@ -1,7 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Cancelled')
+@section('title', 'Home')
 
 @section('content')
+@include('components.header')
 
 <div class="container d-flex justify-content-center mt-5">
     <div class="w-75 mt-5">

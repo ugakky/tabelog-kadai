@@ -8,7 +8,6 @@ use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use App\Services\StripeService; // StripeServiceクラスをインポート
 
-
 class CheckoutController extends Controller
 {
     protected $stripeService; // StripeServiceのインスタンスを格納するプロパティ
@@ -73,16 +72,17 @@ class CheckoutController extends Controller
     public function cancel()
     {
         $user = Auth::user();
-    
-        // stripe_subscription_id を空にする
-        $user->stripe_subscription_id = null;
-    
+
+        if ($user->subscribed('default')) {
+            // ユーザーが定期購読している場合の処理
+            $user->subscription('default')->cancel(); // 定期購読をキャンセル
+        }
+
         // ユーザーの会員ステータスを更新
         $user->member_status = "free";
         $user->save();
-    
+
         // リダイレクトとメッセージを返す
         return redirect()->route('cancelled')->with('status', '退会が完了しました');
     }
 }
-
