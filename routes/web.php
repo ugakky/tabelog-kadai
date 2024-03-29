@@ -9,6 +9,7 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Psy\VersionUpdater\Checker;
+use App\Services\StripeService;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,9 +49,15 @@ Route::controller(UserController::class)->group(function () {
 Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
 
 Route::controller(CheckoutController::class)->group(function () {
-  Route::get('checkout', 'index')->name('checkout.index');
-  Route::post('checkout', 'store')->name('checkout.store');
-  Route::get('checkout/success', 'success')->name('checkout.success');
-  Route::delete('/cancel-membership')->name('cancelMembership');
+  Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+  Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+  Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+  Route::post('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
 });
-Route::delete('/cancel-membership', [CheckoutController::class, 'cancel'])->name('cancelMembership');
+
+Route::post('/cancel-membership', [CheckoutController::class, 'cancel'])->name('cancel.membership');
+Route::delete('/cancel-membership', [CheckoutController::class, 'cancel'])->name('cancel.membership');
+
+Route::get('/cancelled', function () {
+    return view('cancelled');
+})->name('cancelled');

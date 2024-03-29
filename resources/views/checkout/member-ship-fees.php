@@ -9,5 +9,6 @@ $price = Price::create([
     'currency' => 'jpy', // 通貨（日本円）
 ]);
 
+
 // 価格の作成に成功した場合の処理
 ?>

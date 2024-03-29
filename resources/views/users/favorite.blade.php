@@ -1,18 +1,39 @@
 @extends('layouts.app')
-@section('title', 'Home')
+
+@section('css')
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
-@include('components.header')
-<div class="container  d-flex justify-content-center mt-3">
-  <div class="w-75 mt-5">
-    <h1>お気に入り</h1>
-    <a href="{{route('restaurants.index')}}">ホーム</a> >お気に入り
+    <div class="container">
+        <h1>お気に入り</h1>
 
-    <hr>
-    @foreach ($restaurants as $restaurant)
-    <div>{{$restaurant->store_name}}</div>
+        <!-- 成功メッセージの表示 -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    @endforeach
-    <hr>
-  </div>
-</div>
+        <!-- お気に入りリストの表示 -->
+        @foreach ($favorites as $fav)
+            <a href="{{ route('stores.show', $fav->store_id) }}">
+                <h5>{{ $fav->store->name }}</h5>
+                @if ($fav->store->image !== "")
+                    <img src="{{ asset($fav->store->image) }}" class="img-thumbnail">
+                @else
+                    <img src="{{ asset('img/dummy.png') }}" class="img-thumbnail">
+                @endif
+            </a>
+
+            <!-- お気に入り解除フォーム -->
+            <form action="{{ route('stores.favorite', $fav->store_id) }}" method="POST">
+                @csrf
+                <button class="btn btn-primary my-3">
+                    お気に入り解除
+                </button>
+            </form>
+            <hr> 
+        @endforeach
+    </div>
+@endsection

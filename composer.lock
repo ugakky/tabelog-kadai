@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a58dbaa53bcec7d28801cf693ddb7bcd",
+    "content-hash": "c41e84ffb5981c4cf2927d3f84e1978c",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -3873,16 +3873,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v13.9.0",
+            "version": "v13.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "3d9250964c9d0bc9de8c706b16a90a82d9c8ed9d"
+                "reference": "b122efcf4ee02256e4a9ae60783cbf1c3f702503"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/3d9250964c9d0bc9de8c706b16a90a82d9c8ed9d",
-                "reference": "3d9250964c9d0bc9de8c706b16a90a82d9c8ed9d",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/b122efcf4ee02256e4a9ae60783cbf1c3f702503",
+                "reference": "b122efcf4ee02256e4a9ae60783cbf1c3f702503",
                 "shasum": ""
             },
             "require": {
@@ -3926,9 +3926,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v13.9.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v13.16.0"
             },
-            "time": "2024-01-12T18:12:31+00:00"
+            "time": "2024-03-28T19:17:08+00:00"
         },
         {
             "name": "symfony/console",

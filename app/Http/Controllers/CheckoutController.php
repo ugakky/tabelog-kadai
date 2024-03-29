@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use App\Services\StripeService; // StripeServiceクラスをインポート
+
 
 class CheckoutController extends Controller
 {
+    protected $stripeService; // StripeServiceのインスタンスを格納するプロパティ
+
+    public function __construct(StripeService $stripeService)
+    {
+        $this->stripeService = $stripeService;
+    }
+
     public function index()
     {
-        return view('checkout.index');
+        // データベースから会員ステータスを取得（仮の例）
+        $member_status = Auth::user()->member_status;
+
+        // ビューにデータを渡す
+        return view('checkout.index', compact('member_status'));
     }
 
     public function store(Request $request)
@@ -36,6 +48,12 @@ class CheckoutController extends Controller
             'cancel_url' => route('checkout.index'),  //決済キャンセル時のリダイレクト先URL
         ]);
 
+        // 定期購読IDを取得して保存する
+        $subscriptionId = $checkout_session->subscription;
+        $user = Auth::user();
+        $user->stripe_subscription_id = $subscriptionId;
+        $user->save();
+
         return redirect($checkout_session->url);
     }
 
@@ -51,33 +69,20 @@ class CheckoutController extends Controller
         return view('checkout.success');
     }
 
+    // 購読キャンセル時の処理
     public function cancel()
     {
         $user = Auth::user();
-
-        // StripeのAPIキーをセット
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        try {
-            // Stripeの顧客IDを取得
-            $stripeCustomerId = $user->stripe_customer_id;
-
-            // 顧客IDを使用して定期購読をキャンセル
-            $subscription = \Stripe\Subscription::retrieve($user->stripe_subscription_id);
-            $subscription->cancel();
-
-            // 顧客を削除（オプション）
-            // Stripe\Customer::retrieve($stripeCustomerId)->delete();
-
-            // ユーザーの会員ステータスを更新
-            $user->member_status = "free";
-            $user->save();
-
-            // リダイレクトとメッセージを返す
-            return redirect()->back()->with('status', '退会が完了しました');
-        } catch (ApiErrorException $e) {
-            // エラーが発生した場合の処理
-            return redirect()->back()->withErrors(['stripe_error' => 'Stripeでエラーが発生しました: ' . $e->getMessage()]);
-        }
+    
+        // stripe_subscription_id を空にする
+        $user->stripe_subscription_id = null;
+    
+        // ユーザーの会員ステータスを更新
+        $user->member_status = "free";
+        $user->save();
+    
+        // リダイレクトとメッセージを返す
+        return redirect()->route('cancelled')->with('status', '退会が完了しました');
     }
 }
+
