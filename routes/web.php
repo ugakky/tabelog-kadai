@@ -51,4 +51,3 @@ Route::controller(CheckoutController::class)->group(function () {
   Route::post('checkout', 'store')->name('checkout.store');
   Route::get('checkout/success', 'success')->name('checkout.success');
 });
-
